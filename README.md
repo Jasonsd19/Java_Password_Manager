@@ -37,3 +37,10 @@ graded from weak to strong. Additionally, I feel like this project will be **cha
 enough to be a valuable **learning experience** and it is something that can always be
 improved and worked on, so it can be as hard as I make it. Lastly, I have a feeling
 that working on this is gonna be **fun**.
+
+## User Stories
+
+- As a user I want to be able to login to my database
+- As a user I want to be able to add an entry to my database
+- As a user I want to be able to generate passwords for entries
+- As a user I want to be able to view the password of my entries
