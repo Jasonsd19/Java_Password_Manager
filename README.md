@@ -40,7 +40,7 @@ that working on this is gonna be **fun**.
 
 ## User Stories
 
-- As a user I want to be able to login to my database
-- As a user I want to be able to add an entry to my database
-- As a user I want to be able to generate passwords for entries
-- As a user I want to be able to view the password of my entries
+- As a user I want to be able to login to my database file.
+- As a user I want to be able to add an entry to my database file.
+- As a user I want to be able to remove an entry to my database file.
+- As a user I want to be able to view the password and username of my entries.
