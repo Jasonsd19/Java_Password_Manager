@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 //Represents a cipher that can encrypt and decrypt passwords or text files.
 public class Cipher {
-    private String encryptedPassword;
+    String encryptedPassword;
 
     //EFFECTS: Constructs a cipher that encrypts given password and uses it as a key.
     public Cipher(String password) {

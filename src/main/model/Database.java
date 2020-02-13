@@ -13,7 +13,7 @@ import java.util.Iterator;
 public class Database {
     String path;
     String databaseName;
-    private Cipher cipher;
+    Cipher cipher;
     Reader reader;
     Writer writer;
     ArrayList<Entry> entries;

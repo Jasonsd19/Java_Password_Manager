@@ -4,8 +4,8 @@ package model;
 public class Entry {
     String entryName;
     String userName;
-    private String password;
-    private Cipher cipher;
+    String password;
+    Cipher cipher;
 
     //EFFECTS: Creates an entry with entry name, username, and encrypted password.
     public Entry(String name, String userName, String password, Cipher cipher) {

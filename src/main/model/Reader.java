@@ -8,7 +8,7 @@ import java.util.Scanner;
 //Represents a reader that can read/remove/manage entries from Database text file
 public class Reader {
     String path;
-    private Cipher cipher;
+    Cipher cipher;
 
     //EFFECTS: Constructs reader and instantiates field variables.
     public Reader(String path, Cipher cipher) {

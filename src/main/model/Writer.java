@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 //Represents a writer that can write entries to a Database text file
 public class Writer {
     String path;
-    private Cipher cipher;
+    Cipher cipher;
 
     //EFFECTS: Constructs a writer and instantiates field variables.
     public Writer(String path, Cipher cipher) {
