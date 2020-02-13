@@ -44,3 +44,4 @@ that working on this is gonna be **fun**.
 - As a user I want to be able to add an entry to my database file.
 - As a user I want to be able to remove an entry to my database file.
 - As a user I want to be able to view the password and username of my entries.
+- As a user I want my password to be secure and encrypted.

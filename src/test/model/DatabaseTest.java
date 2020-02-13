@@ -83,11 +83,13 @@ public class DatabaseTest {
     public void testGetEntryUsername(){
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
+        assertNotEquals("testusername", databaseNewTest.getEntryUserName("bleh"));
     }
 
     @Test
     public void testGetEntryPassword(){
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
+        assertEquals("testpassword", databaseNewTest.getEntryPassword("test"));
+        assertNotEquals("testpassword", databaseNewTest.getEntryPassword("bleh"));
     }
 }
