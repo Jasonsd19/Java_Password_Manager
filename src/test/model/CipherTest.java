@@ -23,7 +23,7 @@ public class CipherTest {
     // WriterTest.
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         cipherTest = new Cipher(password);
         databaseTest = new Database("cipherTest", "password");
     }

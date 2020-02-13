@@ -19,16 +19,12 @@ public class Writer {
     //EFFECTS: Creates an Entry, writes the formatted entry to the Database text file,
     //         and returns the created Entry.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public Entry writeEntry(String name, String userName, String password) {
+    public Entry writeEntry(String name, String userName, String password) throws IOException {
         Entry newEntry = new Entry(name, userName, password, cipher);
         String formattedEntry = newEntry.formattedEntry();
-        try {
-            PrintWriter writer = new PrintWriter(new FileWriter(path, true));
-            writer.println(formattedEntry);
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
-        }
+        PrintWriter writer = new PrintWriter(new FileWriter(path, true));
+        writer.println(formattedEntry);
+        writer.close();
         return newEntry;
     }
 }

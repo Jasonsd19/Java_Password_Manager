@@ -20,24 +20,20 @@ public class Database {
 
     //EFFECTS: Create a new Database file with given name and master password.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public Database(String name, String password) {
-        try {
-            cipher = new Cipher(password);
-            entries = new ArrayList<>();
-            this.databaseName = name;
-            File oldFile = new File("data\\" + this.databaseName + ".txt");
-            path = oldFile.getPath();
-            String absPath = oldFile.getAbsolutePath();
-            reader = new Reader(path, cipher);
-            writer = new Writer(path, cipher);
-            oldFile.delete();
-            File newFile = new File(path);
-            PrintWriter writer = new PrintWriter(new FileWriter(newFile, true));
-            writer.println("Entry Name, Username, Password,");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
-        }
+    public Database(String name, String password) throws IOException {
+        cipher = new Cipher(password);
+        entries = new ArrayList<>();
+        this.databaseName = name;
+        File oldFile = new File("data\\" + this.databaseName + ".txt");
+        path = oldFile.getPath();
+        String absPath = oldFile.getAbsolutePath();
+        reader = new Reader(path, cipher);
+        writer = new Writer(path, cipher);
+        oldFile.delete();
+        File newFile = new File(path);
+        PrintWriter writer = new PrintWriter(new FileWriter(newFile, true));
+        writer.println("Entry Name, Username, Password,");
+        writer.close();
     }
 
     //EFFECTS: Loads an existing Database file given the absolute path, database name, and master password.
@@ -57,7 +53,7 @@ public class Database {
     //MODIFIES: this, text file
     //EFFECTS: Adds a new entry to the entries list, given a unique entry name, writes the entry to the
     //         Database file and finally add the entry to the entries list.
-    public void addNewEntry(String name, String userName, String password) {
+    public void addNewEntry(String name, String userName, String password) throws IOException {
         if (isUnique(name)) {
             entries.add(writer.writeEntry(name, userName, password));
         } else {
@@ -67,7 +63,7 @@ public class Database {
 
     //MODIFIES: this, text file
     //EFFECTS: Removes an entry from the entries list and the Database file.
-    public void removeEntry(String name) {
+    public void removeEntry(String name) throws IOException {
         if (!isUnique(name)) {
             reader.removeEntry(name);
             Iterator<Entry> iterator = entries.iterator();
@@ -94,7 +90,7 @@ public class Database {
 
     //MODIFIES: this
     //EFFECTS: Loads all entries from an existing Database file and adds them to the entries list.
-    public void loadEntries() {
+    public void loadEntries() throws IOException {
         entries.addAll(reader.readEntries());
     }
 

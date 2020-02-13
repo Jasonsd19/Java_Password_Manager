@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +15,7 @@ public class ReaderTest {
     //Both readEntries() and removeEntries() are tested indirectly in DatabaseTest.
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         databaseTest = new Database("testReader", "password");
     }
 
@@ -29,7 +30,7 @@ public class ReaderTest {
     }
 
     @Test
-    public void testReadEntries() {
+    public void testReadEntries() throws IOException {
         databaseTest.writer.writeEntry("test1", "testusername", "testpassword");
         databaseTest.writer.writeEntry("test2", "testusername2", "testpassword2");
         assertEquals(0, databaseTest.entries.size());
@@ -44,7 +45,7 @@ public class ReaderTest {
     }
 
     @Test
-    public void testRemoveEntry() {
+    public void testRemoveEntry() throws IOException {
         databaseTest.addNewEntry("test1", "testusername", "testpassword");
         databaseTest.addNewEntry("test2", "testusername2", "testpassword2");
         assertEquals(2, databaseTest.entries.size());

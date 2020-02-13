@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseTest {
@@ -14,7 +16,7 @@ public class DatabaseTest {
     // if all other methods pass then save() and load() are working as expected.
 
     @BeforeEach
-    public void setup(){
+    public void setup() throws IOException {
         databaseNewTest = new Database("testNewFile", "password");
         databaseLoadTest = new Database("data\\testFile.txt", "testFile", "password");
     }
@@ -38,7 +40,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testAddNewEntry() {
+    public void testAddNewEntry() throws IOException {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals(1, databaseNewTest.entries.size());
         databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
@@ -49,7 +51,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testRemoveEntry() {
+    public void testRemoveEntry() throws IOException {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals(1, databaseNewTest.entries.size());
         databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
@@ -62,14 +64,14 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testIsUnique() {
+    public void testIsUnique() throws IOException {
         assertTrue(databaseNewTest.isUnique("test"));
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertFalse(databaseNewTest.isUnique("test"));
     }
 
     @Test
-    public void testLoadEntries() {
+    public void testLoadEntries() throws IOException {
         assertEquals(0, databaseNewTest.entries.size());
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals(1, databaseNewTest.entries.size());
@@ -80,14 +82,14 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testGetEntryUsername(){
+    public void testGetEntryUsername() throws IOException {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
         assertNotEquals("testusername", databaseNewTest.getEntryUserName("bleh"));
     }
 
     @Test
-    public void testGetEntryPassword(){
+    public void testGetEntryPassword() throws IOException {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals("testpassword", databaseNewTest.getEntryPassword("test"));
         assertNotEquals("testpassword", databaseNewTest.getEntryPassword("bleh"));

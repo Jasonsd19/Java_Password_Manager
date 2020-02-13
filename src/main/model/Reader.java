@@ -19,7 +19,7 @@ public class Reader {
     //EFFECTS: Reads a decrypted Database text file and returns a list of all entries found within the file.
     //IOException an exception raised if file is not found or error in reading/writing file
     //NoSuchElementException an exception raised once reader reaches end of file.
-    public ArrayList<Entry> readEntries() {
+    public ArrayList<Entry> readEntries() throws IOException {
         ArrayList<Entry> results = new ArrayList<>();
         try {
             Scanner reader = new Scanner(new File(path));
@@ -36,8 +36,6 @@ public class Reader {
                     results.add(loadedEntry);
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
         } catch (NoSuchElementException e) {
             System.out.println("Loaded Entries.");
         }
@@ -47,26 +45,22 @@ public class Reader {
     //MODIFIES: text file
     //EFFECTS: Removes entry with given entry name from Database text file.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public void removeEntry(String name) {
-        try {
-            File inFile = new File(path);
-            File outFile = new File(path + ".txt");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-            PrintWriter printWriter = new PrintWriter(new FileWriter(outFile));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (!line.contains(name)) {
-                    printWriter.println(line);
-                    printWriter.flush();
-                }
+    public void removeEntry(String name) throws IOException {
+        File inFile = new File(path);
+        File outFile = new File(path + ".txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+        PrintWriter printWriter = new PrintWriter(new FileWriter(outFile));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            if (!line.contains(name)) {
+                printWriter.println(line);
+                printWriter.flush();
             }
-            printWriter.close();
-            bufferedReader.close();
-            inFile.delete();
-            outFile.renameTo(inFile);
-        } catch (IOException e) {
-            System.out.println("File Does Not Exist.");
         }
+        printWriter.close();
+        bufferedReader.close();
+        inFile.delete();
+        outFile.renameTo(inFile);
     }
 
 }

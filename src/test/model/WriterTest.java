@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WriterTest {
@@ -12,7 +14,7 @@ public class WriterTest {
     //The writeEntry() method is tested indirectly in the DatabaseTest.
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         databaseTest = new Database("testWriter", "password");
     }
 
@@ -27,7 +29,7 @@ public class WriterTest {
     }
 
     @Test
-    public void testWriteEntry() {
+    public void testWriteEntry() throws IOException {
         databaseTest.loadEntries();
         assertEquals(0, databaseTest.entries.size());
         databaseTest.writer.writeEntry("test1", "testusername", "testpassword");
