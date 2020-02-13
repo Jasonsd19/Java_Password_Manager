@@ -35,7 +35,6 @@ public class Database {
             PrintWriter writer = new PrintWriter(new FileWriter(newFile, true));
             writer.println("Entry Name, Username, Password,");
             writer.close();
-            System.out.println("Constructed new database at " + path);
         } catch (IOException e) {
             System.out.println("Can't Find File.");
         }
