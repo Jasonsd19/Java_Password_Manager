@@ -1,8 +1,8 @@
 package model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,13 +13,13 @@ public class DatabaseTest {
     // methods save() and load() are integrated with constructors and many other methods
     // if all other methods pass then save() and load() are working as expected.
 
-    @Before
+    @BeforeEach
     public void setup(){
         databaseNewTest = new Database("testNewFile", "password");
         databaseLoadTest = new Database("data\\testFile.txt", "testFile", "password");
     }
 
-    @After
+    @AfterEach
     public void saveAndEncrypt() {
         databaseNewTest.save();
         databaseLoadTest.save();

@@ -1,8 +1,8 @@
 package model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,12 +11,12 @@ public class WriterTest {
 
     //The writeEntry() method is tested indirectly in the DatabaseTest.
 
-    @Before
+    @BeforeEach
     public void setup() {
         databaseTest = new Database("testWriter", "password");
     }
 
-    @After
+    @AfterEach
     public void saveAndEncrypt() {
         databaseTest.save();
     }

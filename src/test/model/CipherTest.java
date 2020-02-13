@@ -1,8 +1,8 @@
 package model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,14 +22,14 @@ public class CipherTest {
     // implement and the actual handling of the text files is covered by DatabaseTest, ReaderTest, and
     // WriterTest.
 
-    @Before
+    @BeforeEach
     public void setup() {
         cipherTest = new Cipher(password);
         databaseTest = new Database("cipherTest", "password");
     }
 
-    @After
-    public void saveAdEncrypt() {
+    @AfterEach
+    public void saveAndEncrypt() {
         databaseTest.save();
     }
 

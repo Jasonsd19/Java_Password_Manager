@@ -1,7 +1,7 @@
 package model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,7 @@ public class EntryTest {
     Entry testEntry;
     Entry testEntryTwo;
 
-    @Before
+    @BeforeEach
     public void setup() {
         cipher = new Cipher(password);
         testEntry = new Entry("test1", "testusername", "testpassword", cipher);

@@ -1,8 +1,8 @@
 package model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 
@@ -13,12 +13,12 @@ public class ReaderTest {
 
     //Both readEntries() and removeEntries() are tested indirectly in DatabaseTest.
 
-    @Before
+    @BeforeEach
     public void setup() {
         databaseTest = new Database("testReader", "password");
     }
 
-    @After
+    @AfterEach
     public void saveAndEncrypt() {
         databaseTest.save();
     }
