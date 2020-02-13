@@ -77,3 +77,4 @@ public class CipherTest {
         assertTrue(plainText.equals(decryptedText));
     }
 }
+
