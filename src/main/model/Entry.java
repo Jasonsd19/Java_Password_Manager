@@ -2,10 +2,10 @@ package model;
 
 // Represents an entry in the password manager.
 public class Entry {
-    String entryName;
-    String userName;
-    String password;
-    Cipher cipher;
+    public String entryName;
+    public String userName;
+    private String password;
+    private Cipher cipher;
 
     //EFFECTS: Creates an entry with entry name, username, and encrypted password.
     public Entry(String name, String userName, String password, Cipher cipher) {
