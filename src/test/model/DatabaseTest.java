@@ -105,9 +105,9 @@ public class DatabaseTest {
             databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
             assertEquals(2, databaseNewTest.entries.size());
             assertEquals("testFile", databaseLoadTest.databaseName);
-            databaseNewTest.removeEntry("nothing");
+            assertFalse(databaseNewTest.removeEntry("nothing"));
             assertEquals(2, databaseNewTest.entries.size());
-            databaseNewTest.removeEntry("test");
+            assertTrue(databaseNewTest.removeEntry("test"));
             assertEquals(1, databaseNewTest.entries.size());
         } catch (IOException e) {
             fail();
