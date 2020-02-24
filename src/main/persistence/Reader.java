@@ -43,9 +43,8 @@ public class Reader {
             }
         } catch (NoSuchElementException e) {
             System.out.println("Loaded Entries.");
-        } finally {
-            return results;
         }
+        return results;
     }
 
     //MODIFIES: text file
