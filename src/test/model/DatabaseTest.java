@@ -4,6 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseTest {
@@ -15,20 +23,56 @@ public class DatabaseTest {
 
     @BeforeEach
     public void setup(){
-        databaseNewTest = new Database("testNewFile", "password");
-        databaseLoadTest = new Database("data\\testFile.txt", "testFile", "password");
+        try {
+            if (Files.exists(Paths.get("data\\testNewFile.txt"))) {
+                databaseNewTest = new Database("data\\testNewFile.txt", "testNewFile", "password");
+                databaseNewTest.entries = new ArrayList<>();
+                File file = new File("data\\" + databaseNewTest.databaseName + ".txt");
+                PrintWriter writer = new PrintWriter(new FileWriter(file));
+                writer.println("Entry Name, Username, Password,");
+                writer.close();
+            } else {
+                databaseNewTest = new Database("testNewFile", "password");
+            }
+            databaseLoadTest = new Database("data\\testFile.txt", "testFile", "password");
+        } catch (IOException e) {
+            // shouldn't happen
+            System.out.println("This shouldn't print out.");
+        }
     }
 
     @AfterEach
     public void saveAndEncrypt() {
-        databaseNewTest.save();
-        databaseLoadTest.save();
+        try {
+            databaseNewTest.save();
+            databaseLoadTest.save();
+        } catch (IOException e) {
+            // shouldn't happen
+            System.out.println("This shouldn't print out.");
+        }
     }
 
     @Test
     public void testNewConstructor() {
-        assertEquals("testNewFile", databaseNewTest.databaseName);
-        assertEquals(0, databaseNewTest.entries.size());
+        try {
+            Database testDatabase = new Database("newNewTest", "password");
+            assertEquals("newNewTest", testDatabase.databaseName);
+            assertEquals(0, testDatabase.entries.size());
+            Files.deleteIfExists(Paths.get("data\\newNewTest.txt"));
+        } catch (IOException e) {
+            // shouldn't happen
+            fail();
+        }
+    }
+
+    @Test
+    public void testNewDuplicateDatabase() {
+        try {
+            new Database("testNewFile", "password");
+            fail();
+        } catch (IOException e) {
+            // expected
+        }
     }
 
     @Test
@@ -39,57 +83,87 @@ public class DatabaseTest {
 
     @Test
     public void testAddNewEntry() {
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals(1, databaseNewTest.entries.size());
-        databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
-        assertEquals(2, databaseNewTest.entries.size());
-        databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
-        assertEquals(2, databaseNewTest.entries.size());
-        assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
+        try {
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals(1, databaseNewTest.entries.size());
+            databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
+            assertEquals(2, databaseNewTest.entries.size());
+            databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
+            assertEquals(2, databaseNewTest.entries.size());
+            assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 
     @Test
     public void testRemoveEntry() {
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals(1, databaseNewTest.entries.size());
-        databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
-        assertEquals(2, databaseNewTest.entries.size());
-        assertEquals("testFile", databaseLoadTest.databaseName);
-        databaseNewTest.removeEntry("nothing");
-        assertEquals(2, databaseNewTest.entries.size());
-        databaseNewTest.removeEntry("test");
-        assertEquals(1, databaseNewTest.entries.size());
+        try {
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals(1, databaseNewTest.entries.size());
+            databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
+            assertEquals(2, databaseNewTest.entries.size());
+            assertEquals("testFile", databaseLoadTest.databaseName);
+            databaseNewTest.removeEntry("nothing");
+            assertEquals(2, databaseNewTest.entries.size());
+            databaseNewTest.removeEntry("test");
+            assertEquals(1, databaseNewTest.entries.size());
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 
     @Test
     public void testIsUnique() {
-        assertTrue(databaseNewTest.isUnique("test"));
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertFalse(databaseNewTest.isUnique("test"));
+        try {
+            assertTrue(databaseNewTest.isUnique("test"));
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertFalse(databaseNewTest.isUnique("test"));
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 
     @Test
     public void testLoadEntries() {
-        assertEquals(0, databaseNewTest.entries.size());
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals(1, databaseNewTest.entries.size());
-        databaseNewTest.save();
-        // load constructor method also calls loadEntries() method.
-        databaseNewTest = new Database("data\\testNewFile.txt", "testNewFile", "password");
-        assertEquals(1, databaseNewTest.entries.size());
+        try {
+            assertEquals(0, databaseNewTest.entries.size());
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals(1, databaseNewTest.entries.size());
+            databaseNewTest.save();
+            // load constructor method also calls loadEntries() method.
+            databaseNewTest = new Database("data\\testNewFile.txt", "testNewFile", "password");
+            assertEquals(1, databaseNewTest.entries.size());
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 
     @Test
     public void testGetEntryUsername(){
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
-        assertNotEquals("testusername", databaseNewTest.getEntryUserName("bleh"));
+        try {
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
+            assertNotEquals("testusername", databaseNewTest.getEntryUserName("bleh"));
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 
     @Test
     public void testGetEntryPassword(){
-        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
-        assertEquals("testpassword", databaseNewTest.getEntryPassword("test"));
-        assertNotEquals("testpassword", databaseNewTest.getEntryPassword("bleh"));
+        try {
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals("testpassword", databaseNewTest.getEntryPassword("test"));
+            assertNotEquals("testpassword", databaseNewTest.getEntryPassword("bleh"));
+        } catch (IOException e) {
+            fail();
+            // shouldn't happen
+        }
     }
 }

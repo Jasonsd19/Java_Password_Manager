@@ -4,10 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,13 +28,33 @@ public class CipherTest {
 
     @BeforeEach
     public void setup() {
-        cipherTest = new Cipher(password);
-        databaseTest = new Database("cipherTest", "password");
+        try {
+            if (Files.exists(Paths.get("data\\cipherTest.txt"))) {
+                databaseTest = new Database("data\\cipherTest.txt", "cipherTest", "password");
+                databaseTest.entries = new ArrayList<>();
+                File file = new File("data\\" + databaseTest.databaseName + ".txt");
+                PrintWriter writer = new PrintWriter(new FileWriter(file));
+                writer.println("Entry Name, Username, Password,");
+                writer.close();
+            } else {
+                databaseTest = new Database("cipherTest", "password");
+            }
+            cipherTest = new Cipher(password);
+        } catch (IOException e) {
+            // shouldn't happen
+            System.out.println("This shouldn't print out.");
+            fail();
+        }
     }
 
     @AfterEach
     public void saveAndEncrypt() {
-        databaseTest.save();
+        try {
+            databaseTest.save();
+        } catch (IOException e) {
+            // shouldn't happen
+            System.out.println("This shouldn't print out.");
+        }
     }
 
     @Test
@@ -40,9 +64,10 @@ public class CipherTest {
             databaseTest.save();
             String encrypt = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
             assertFalse(text.equals(encrypt));
-            databaseTest.load();
+//            databaseTest.load();
         } catch (IOException e) {
             // shouldn't happen
+            fail();
         }
     }
 
@@ -58,6 +83,7 @@ public class CipherTest {
             assertTrue(text.equals(decrypt));
         } catch (IOException e) {
             // shouldn't happen
+            fail();
         }
     }
 

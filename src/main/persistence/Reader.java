@@ -24,7 +24,7 @@ public class Reader {
     //EFFECTS: Reads a decrypted Database text file and returns a list of all entries found within the file.
     //IOException an exception raised if file is not found or error in reading/writing file
     //NoSuchElementException an exception raised once reader reaches end of file.
-    public ArrayList<Entry> readEntries() {
+    public ArrayList<Entry> readEntries() throws IOException {
         ArrayList<Entry> results = new ArrayList<>();
         try {
             Scanner reader = new Scanner(new File(path));
@@ -41,37 +41,32 @@ public class Reader {
                     results.add(loadedEntry);
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
         } catch (NoSuchElementException e) {
             System.out.println("Loaded Entries.");
+        } finally {
+            return results;
         }
-        return results;
     }
 
     //MODIFIES: text file
     //EFFECTS: Removes entry with given entry name from Database text file.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public void removeEntry(String name) {
-        try {
-            File mainFile = new File(path);
-            File tempFile = new File(path + ".txt");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-            PrintWriter printWriter = new PrintWriter(new FileWriter(new File(path + ".txt")));
-            String textLine;
-            while ((textLine = bufferedReader.readLine()) != null) {
-                if (!textLine.contains(name)) {
-                    printWriter.println(textLine);
-                    printWriter.flush();
-                }
+    public void removeEntry(String name) throws IOException {
+        File mainFile = new File(path);
+        File tempFile = new File(path + ".txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+        PrintWriter printWriter = new PrintWriter(new FileWriter(new File(path + ".txt")));
+        String textLine;
+        while ((textLine = bufferedReader.readLine()) != null) {
+            if (!textLine.contains(name)) {
+                printWriter.println(textLine);
+                printWriter.flush();
             }
-            printWriter.close();
-            bufferedReader.close();
-            replaceContents(mainFile, tempFile);
-            tempFile.delete();
-        } catch (IOException e) {
-            System.out.println("File Does Not Exist.");
         }
+        printWriter.close();
+        bufferedReader.close();
+        replaceContents(mainFile, tempFile);
+        tempFile.delete();
     }
 
     public void replaceContents(File mainFile, File tempFile) throws IOException {

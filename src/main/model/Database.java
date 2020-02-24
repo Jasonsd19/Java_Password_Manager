@@ -8,13 +8,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 // A password database that can add/remove entries and write data to text files.
 public class Database {
     public String path;
-    String databaseName;
+    public String databaseName;
     private Cipher cipher;
     public Reader reader;
     public Writer writer;
@@ -22,26 +25,27 @@ public class Database {
 
     //EFFECTS: Create a new Database file with given name and master password.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public Database(String name, String password) {
-        try {
-            cipher = new Cipher(password);
-            entries = new ArrayList<>();
-            this.databaseName = name;
-            File file = new File("data\\" + this.databaseName + ".txt");
-            path = file.getPath();
-            reader = new Reader(path, cipher);
-            writer = new Writer(path, cipher);
-            PrintWriter writer = new PrintWriter(new FileWriter(file));
-            writer.println("Entry Name, Username, Password,");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
+    public Database(String name, String password) throws IOException {
+        cipher = new Cipher(password);
+        entries = new ArrayList<>();
+        this.databaseName = name;
+        if (Files.exists(Paths.get("data\\" + this.databaseName + ".txt"))) {
+            throw new FileAlreadyExistsException("data\\" + this.databaseName + ".txt");
         }
+        File file = new File("data\\" + this.databaseName + ".txt");
+        path = file.getPath();
+        reader = new Reader(path, cipher);
+        writer = new Writer(path, cipher);
+        PrintWriter writer = new PrintWriter(new FileWriter(file));
+        writer.println("Entry Name, Username, Password,");
+        writer.close();
     }
 
     //EFFECTS: Loads an existing Database file given the absolute path, database name, and master password.
     //EncryptionOperationNotPossibleException an exception raised when given incorrect password
-    public Database(String path, String name, String password) throws EncryptionOperationNotPossibleException {
+    //IOException an exception raised if file is not found or error in reading/writing file
+    public Database(String path, String name, String password) throws EncryptionOperationNotPossibleException,
+            IOException {
         cipher = new Cipher(password);
         entries = new ArrayList<>();
         this.databaseName = name;
@@ -52,19 +56,19 @@ public class Database {
     }
 
     //MODIFIES: this, text file
-    //EFFECTS: Adds a new entry to the entries list, given a unique entry name, writes the entry to the
-    //         Database file and finally add the entry to the entries list.
-    public void addNewEntry(String name, String userName, String password) {
+    //EFFECTS: Adds new entry and returns true if entry name is unique, returns false otherwise.
+    public boolean addNewEntry(String name, String userName, String password) throws IOException {
         if (isUnique(name)) {
             entries.add(writer.writeEntry(name, userName, password));
+            return true;
         } else {
-            System.out.println("Entry name not unique.");
+            return false;
         }
     }
 
     //MODIFIES: this, text file
-    //EFFECTS: Removes an entry from the entries list and the Database file.
-    public void removeEntry(String name) {
+    //EFFECTS: Returns true and removes entry from database file if it exists, false otherwise.
+    public boolean removeEntry(String name) throws IOException {
         if (!isUnique(name)) {
             reader.removeEntry(name);
             Iterator<Entry> iterator = entries.iterator();
@@ -73,8 +77,9 @@ public class Database {
                     iterator.remove();
                 }
             }
+            return true;
         } else {
-            System.out.println("Entry does not exist.");
+            return false;
         }
     }
 
@@ -91,7 +96,7 @@ public class Database {
 
     //MODIFIES: this
     //EFFECTS: Loads all entries from an existing Database file and adds them to the entries list.
-    public void loadEntries() {
+    public void loadEntries() throws IOException {
         entries.addAll(reader.readEntries());
     }
 
@@ -99,11 +104,9 @@ public class Database {
     public String getEntryUserName(String name) {
         for (Entry entry: entries) {
             if (entry.entryName.equals(name)) {
-                System.out.println("username: " + entry.userName);
                 return entry.userName;
             }
         }
-        System.out.println("Entry not in database.");
         return "";
     }
 
@@ -111,42 +114,29 @@ public class Database {
     public String getEntryPassword(String name) {
         for (Entry entry: entries) {
             if (entry.entryName.equals(name)) {
-                System.out.println("password: " + entry.getPassword());
                 return entry.getPassword();
             }
         }
-        System.out.println("Entry not in database.");
         return "";
     }
 
     //MODIFIES: text file
     //EFFECTS: Encrypts all text in Database file using master password as key.
     //IOException an exception raised if file is not found or error in reading/writing file
-    public void save() {
-        try {
-            String encryptedText = cipher.encryptText(path);
-            PrintWriter writer = new PrintWriter(new FileWriter(path));
-            writer.print(encryptedText);
-            writer.close();
-            System.out.println("Saved database at " + path);
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
-        }
+    public void save() throws IOException {
+        String encryptedText = cipher.encryptText(path);
+        PrintWriter writer = new PrintWriter(new FileWriter(path));
+        writer.print(encryptedText);
+        writer.close();
     }
 
     //MODIFIES: text file
     //EFFECTS: Decrypts all text in Database file using master password as key.
-    //IOException an exception raised if file is not found or error in reading/writing file
-    //EncryptionOperationNotPossibleException an exception raised when given incorrect password
-    public void load() throws EncryptionOperationNotPossibleException {
-        try {
-            String decryptedText = cipher.decryptText(path);
-            PrintWriter writer = new PrintWriter(new FileWriter(path));
-            writer.print(decryptedText);
-            writer.close();
-            loadEntries();
-        } catch (IOException e) {
-            System.out.println("Can't Find File.");
-        }
+    public void load() throws EncryptionOperationNotPossibleException, IOException {
+        String decryptedText = cipher.decryptText(path);
+        PrintWriter writer = new PrintWriter(new FileWriter(path));
+        writer.print(decryptedText);
+        writer.close();
+        loadEntries();
     }
 }
