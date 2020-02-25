@@ -12,7 +12,7 @@ import java.util.ArrayList;
 //Represents a writer that can write entries to a specified Database text file
 public class Writer {
     public String path;
-    private Cipher cipher;
+    public Cipher cipher;
 
     //EFFECTS: Constructs a writer and instantiates field variables.
     public Writer(String path, Cipher cipher) {

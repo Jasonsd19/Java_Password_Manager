@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Database {
     public String path;
     public String databaseName;
-    private Cipher cipher;
+    public Cipher cipher;
     public Reader reader;
     public Writer writer;
     public ArrayList<Entry> entries;
