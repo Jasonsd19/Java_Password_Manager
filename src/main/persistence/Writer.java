@@ -33,7 +33,7 @@ public class Writer {
 
     //MODIFIES: json file
     //EFFECTS: Writes decrypted text to database file.
-    public void writeDecryptedTextToFile (String decryptedText) throws IOException {
+    public void writeDecryptedTextToFile(String decryptedText) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(path));
         writer.print(decryptedText);
         writer.close();
