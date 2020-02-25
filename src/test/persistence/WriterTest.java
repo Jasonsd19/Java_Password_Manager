@@ -23,7 +23,7 @@ public class WriterTest {
             databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
             databaseTest.entries = new ArrayList<>();
             databaseTest.save();
-            databaseTest.load();
+            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
@@ -54,7 +54,7 @@ public class WriterTest {
             databaseTest.entries = new ArrayList<>();
             assertEquals(0, databaseTest.entries.size());
             // load() method adds previous two entries to newly instantiated entries ArrayList from json file
-            databaseTest.load();
+            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
             assertEquals(2, databaseTest.entries.size());
         } catch (IOException e) {
             fail();

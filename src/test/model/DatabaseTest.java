@@ -23,7 +23,7 @@ public class DatabaseTest {
             databaseLoadTest = new Database("data\\testFile.json", "testFile", "password");
             databaseLoadTest.entries = new ArrayList<>();
             databaseLoadTest.save();
-            databaseLoadTest.load();
+            databaseLoadTest = new Database("data\\testFile.json", "testFile", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }

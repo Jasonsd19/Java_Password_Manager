@@ -24,7 +24,7 @@ public class ReaderTest {
             databaseTest = new Database("data\\testReader.json", "testReader", "password");
             databaseTest.entries = new ArrayList<>();
             databaseTest.save();
-            databaseTest.load();
+            databaseTest = new Database("data\\testReader.json", "testReader", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
@@ -54,7 +54,7 @@ public class ReaderTest {
             databaseTest.entries = new ArrayList<>();
             assertEquals(0, databaseTest.entries.size());
             // load() method calls readEntries()
-            databaseTest.load();
+            databaseTest = new Database("data\\testReader.json", "testReader", "password");
             assertEquals(2, databaseTest.entries.size());
         } catch (IOException e) {
             fail();
