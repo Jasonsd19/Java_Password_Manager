@@ -3,7 +3,6 @@ package ui;
 import model.Database;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-import javax.imageio.IIOException;
 import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
@@ -147,20 +146,16 @@ public class PassManagerApp {
     //         for the user's Database file
     //IOException an exception raised if file is not found or error in reading/writing file
     public void newEntry() {
-        try {
-            System.out.println("Please enter the name of the entry.");
-            String entryName = scanner.nextLine();
-            System.out.println("Please enter the username.");
-            String userName = scanner.nextLine();
-            System.out.println("Please enter the password.");
-            String entryPassword = scanner.nextLine();
-            if (database.addNewEntry(entryName, userName, entryPassword)) {
-                System.out.println("New entry added.");
-            } else {
-                System.out.println("Entry name not unique.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file, please try again.");
+        System.out.println("Please enter the name of the entry.");
+        String entryName = scanner.nextLine();
+        System.out.println("Please enter the username.");
+        String userName = scanner.nextLine();
+        System.out.println("Please enter the password.");
+        String entryPassword = scanner.nextLine();
+        if (database.addNewEntry(entryName, userName, entryPassword)) {
+            System.out.println("New entry added.");
+        } else {
+            System.out.println("Entry name not unique.");
         }
     }
 
@@ -182,16 +177,12 @@ public class PassManagerApp {
     //EFFECTS: Removes the entry specified by the user from the Database file.
     //IOException an exception raised if file is not found or error in reading/writing file
     public void removeEntry() {
-        try {
-            System.out.println("Please enter the name of the entry you wish to remove.");
-            String entryGet = scanner.nextLine();
-            if (database.removeEntry(entryGet)) {
-                System.out.println("Entry removed.");
-            } else {
-                System.out.println("Entry does not exist.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file, please try again.");
+        System.out.println("Please enter the name of the entry you wish to remove.");
+        String entryGet = scanner.nextLine();
+        if (database.removeEntry(entryGet)) {
+            System.out.println("Entry removed.");
+        } else {
+            System.out.println("Entry does not exist.");
         }
     }
 

@@ -1,13 +1,15 @@
 package persistence;
 
+import com.google.gson.Gson;
 import model.Cipher;
 import model.Entry;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
-//Represents a writer that can write entries to a Database text file
+//Represents a writer that can write entries to a specified Database text file
 public class Writer {
     public String path;
     private Cipher cipher;
@@ -18,16 +20,22 @@ public class Writer {
         this.cipher = cipher;
     }
 
-    //MODIFIES: text file
-    //EFFECTS: Creates an Entry, writes the formatted entry to the Database text file,
-    //         and returns the created Entry.
-    //IOException an exception raised if file is not found or error in reading/writing file
-    public Entry writeEntry(String name, String userName, String password) throws IOException {
-        Entry newEntry = new Entry(name, userName, password, cipher);
-        String formattedEntry = newEntry.formattedEntry();
-        PrintWriter writer = new PrintWriter(new FileWriter(path, true));
-        writer.println(formattedEntry);
+    //MODIFIES: json file
+    //EFFECTS: Writes all entries in the given list to the Database text file.
+    public void writeEntriesToFile(ArrayList<Entry> entries) throws IOException {
+        Gson gson = new Gson();
+        String decryptedText = gson.toJson(entries);
+        String encryptedText = cipher.encryptTextOrPassword(decryptedText);
+        PrintWriter writer = new PrintWriter(new FileWriter(path));
+        writer.print(encryptedText);
         writer.close();
-        return newEntry;
+    }
+
+    //MODIFIES: json file
+    //EFFECTS: Writes decrypted text to database file.
+    public void writeDecryptedTextToFile (String decryptedText) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(path));
+        writer.print(decryptedText);
+        writer.close();
     }
 }

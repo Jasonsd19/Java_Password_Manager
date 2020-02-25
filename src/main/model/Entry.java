@@ -12,17 +12,11 @@ public class Entry {
         this.cipher = cipher;
         this.entryName = name;
         this.userName = userName;
-        this.password = this.cipher.encryptPassword(password);
+        this.password = this.cipher.encryptTextOrPassword(password);
     }
 
     //EFFECTS: Decrypts and returns password
     public String getPassword() {
-        return cipher.decryptPassword(this.password);
-    }
-
-    //EFFECTS: Returns entry formatted to Database text file standards.
-    public String formattedEntry() {
-        String password = getPassword();
-        return entryName + "," + userName + "," + password + ",";
+        return cipher.decryptTextOrPassword(this.password);
     }
 }

@@ -31,10 +31,4 @@ public class EntryTest {
         assertEquals("testpassword", testEntry.getPassword());
         assertEquals("testpassword2", testEntryTwo.getPassword());
     }
-
-    @Test
-    public void testFormattedEntry() {
-        assertEquals("test1,testusername,testpassword,", testEntry.formattedEntry());
-        assertEquals("test2,testusername2,testpassword2,", testEntryTwo.formattedEntry());
-    }
 }

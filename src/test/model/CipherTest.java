@@ -1,106 +1,32 @@
 package model;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CipherTest {
     Cipher cipherTest;
-    String password = "testpassword";
-    Database databaseTest;
-
-    // Testing encryptPassword() and decryptPassword() because they work exactly the same as
-    // encryptText() and decryptText() the only difference is that the former methods work on strings
-    // and the latter methods work on text files. The actually text file tests would be difficult to
-    // implement and the actual handling of the text files is covered by DatabaseTest, ReaderTest, and
-    // WriterTest.
+    String password = "testPassword";
 
     @BeforeEach
     public void setup() {
-        try {
-            if (Files.exists(Paths.get("data\\cipherTest.txt"))) {
-                databaseTest = new Database("data\\cipherTest.txt", "cipherTest", "password");
-                databaseTest.entries = new ArrayList<>();
-                File file = new File("data\\" + databaseTest.databaseName + ".txt");
-                PrintWriter writer = new PrintWriter(new FileWriter(file));
-                writer.println("Entry Name, Username, Password,");
-                writer.close();
-            } else {
-                databaseTest = new Database("cipherTest", "password");
-            }
-            cipherTest = new Cipher(password);
-        } catch (IOException e) {
-            // shouldn't happen
-            System.out.println("This shouldn't print out.");
-            fail();
-        }
-    }
-
-    @AfterEach
-    public void saveAndEncrypt() {
-        try {
-            databaseTest.save();
-        } catch (IOException e) {
-            // shouldn't happen
-            System.out.println("This shouldn't print out.");
-        }
+        cipherTest = new Cipher(password);
     }
 
     @Test
-    public void testEncryptText() {
-        try {
-            String text = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
-            databaseTest.save();
-            String encrypt = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
-            assertFalse(text.equals(encrypt));
-//            databaseTest.load();
-        } catch (IOException e) {
-            // shouldn't happen
-            fail();
-        }
-    }
-
-    @Test
-    public void testDecryptText() {
-        try {
-            String text = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
-            databaseTest.save();
-            String encrypt = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
-            assertFalse(text.equals(encrypt));
-            databaseTest.load();
-            String decrypt = new String(Files.readAllBytes(Paths.get(databaseTest.path)), StandardCharsets.UTF_8);
-            assertTrue(text.equals(decrypt));
-        } catch (IOException e) {
-            // shouldn't happen
-            fail();
-        }
-    }
-
-    @Test
-    public void testEncryptPassword() {
+    public void testEncryptTextOrPassword() {
         String plainText = "This is plain text.";
-        String encryptedText = cipherTest.encryptPassword(plainText);
+        String encryptedText = cipherTest.encryptTextOrPassword(plainText);
         assertFalse(plainText.equals(encryptedText));
     }
 
     @Test
-    public void testDecryptPassword() {
+    public void testDecryptTextOrPassword() {
         String plainText = "This is also plain text.";
-        String encryptedText = cipherTest.encryptPassword(plainText);
+        String encryptedText = cipherTest.encryptTextOrPassword(plainText);
         assertFalse(plainText.equals(encryptedText));
-        String decryptedText = cipherTest.decryptPassword(encryptedText);
+        String decryptedText = cipherTest.decryptTextOrPassword(encryptedText);
         assertTrue(plainText.equals(decryptedText));
     }
 }
-
