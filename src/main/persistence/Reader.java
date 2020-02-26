@@ -22,7 +22,8 @@ public class Reader {
     //EFFECTS: Reads a decrypted Database text file and returns a list of all entries found within the file.
     public ArrayList<Entry> readEntries() throws IOException {
         JsonReader reader = new JsonReader(new FileReader(path));
-        return new Gson().fromJson(reader, new TypeToken<ArrayList<Entry>>(){}.getType());
+        return new Gson().fromJson(reader, new TypeToken<ArrayList<Entry>>() {
+        }.getType());
     }
 
     //EFFECTS: Loads encrypted text from database file as string.

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,30 +20,23 @@ public class ReaderTest {
     //              in the setup() and testReadEntries() methods.
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         try {
+            Files.deleteIfExists(Paths.get("data\\testReader.json"));
             databaseTest = new Database("testReader", "password");
-//            databaseTest.entries = new ArrayList<>();
-//            databaseTest.save();
-//            databaseTest = new Database("data\\testReader.json", "testReader", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
     }
 
     @AfterEach
-    public void saveAndEncrypt() {
+    public void deleteDatabase() {
         try {
-            databaseTest.save();
+            Files.deleteIfExists(Paths.get("data\\testReader.json"));
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
     }
-
-//    @Test
-//    public void testConstructor() {
-//        assertEquals("data\\testReader.json", databaseTest.reader.path);
-//    }
 
     @Test
     public void testReadEntries() {

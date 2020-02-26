@@ -5,57 +5,48 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseTest {
     Database databaseNewTest;
-    Database databaseLoadTest;
 
     // methods save() and load() are integrated with constructors and many other methods
     // if all other methods pass then save() and load() are working as expected.
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         try {
+            Files.deleteIfExists(Paths.get("data\\newTestFile.json"));
             databaseNewTest = new Database("newTestFile", "password");
-            databaseLoadTest = new Database("data\\testFile.json", "testFile", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
     }
 
     @AfterEach
-    public void saveAndEncrypt() {
+    public void deleteDatabase() {
         try {
-            databaseNewTest.save();
-            databaseLoadTest.save();
+            Files.deleteIfExists(Paths.get("data\\newTestFile.json"));
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
     }
 
-//    @Test
-//    public void testNewConstructorFileAlreadyExistsException() {
-//        try {
-//            new Database("testNewFile", "password");
-//            fail();
-//        } catch (IOException e) {
-//            // expected
-//        }
-//    }
-
-//    @Test
-//    public void testLoadConstructor() {
-//        assertEquals("testFile", databaseLoadTest.databaseName);
-//        assertEquals(0, databaseLoadTest.entries.size());
-//    }
-//
-//    @Test
-//    public void testNewConstructor() {
-//        assertEquals("newTestFile", databaseNewTest.databaseName);
-//        assertEquals(0, databaseNewTest.entries.size());
-//    }
+    @Test
+    public void testFileAlreadyExistsException() {
+        try {
+            assertEquals(0, databaseNewTest.entries.size());
+            databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+            assertEquals(1, databaseNewTest.entries.size());
+            databaseNewTest = new Database("newTestFile", "password");
+            fail();
+        } catch (IOException e) {
+            assertEquals(1, databaseNewTest.entries.size());
+        }
+    }
 
     @Test
     public void testAddNewEntry() {
@@ -95,7 +86,7 @@ public class DatabaseTest {
             assertEquals(1, databaseNewTest.entries.size());
             databaseNewTest.save();
             // load constructor method also calls loadEntries() method.
-            databaseNewTest = new Database("data/newTestFile.json", "newTestFile", "password");
+            databaseNewTest = new Database("data\\newTestFile.json", "newTestFile", "password");
             assertEquals(1, databaseNewTest.entries.size());
         } catch (IOException e) {
             fail();
@@ -103,14 +94,14 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testGetEntryUsername(){
+    public void testGetEntryUsername() {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals("testusername", databaseNewTest.getEntryUserName("test"));
         assertNotEquals("testusername", databaseNewTest.getEntryUserName("bleh"));
     }
 
     @Test
-    public void testGetEntryPassword(){
+    public void testGetEntryPassword() {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals("testpassword", databaseNewTest.getEntryPassword("test"));
         assertNotEquals("testpassword", databaseNewTest.getEntryPassword("bleh"));

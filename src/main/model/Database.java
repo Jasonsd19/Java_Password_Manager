@@ -4,7 +4,6 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import persistence.Reader;
 import persistence.Writer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -25,15 +24,11 @@ public class Database {
         cipher = new Cipher(password);
         entries = new ArrayList<>();
         this.databaseName = name;
-//        if (Files.exists(Paths.get("data\\" + this.databaseName + ".json"))) {
-//            throw new FileAlreadyExistsException("data\\" + this.databaseName + ".json");
-//        }
-//        File file = new File("data\\" + this.databaseName + ".json");
-//        file.createNewFile();
-        Files.deleteIfExists(Paths.get("data\\" + this.databaseName + ".json"));
-        File file = new File("data\\" + this.databaseName + ".json");
-        file.createNewFile();
-        path = file.getPath();
+        if (Files.exists(Paths.get("data\\" + this.databaseName + ".json"))) {
+            throw new FileAlreadyExistsException("File with that name already exists.");
+        }
+        Files.createFile(Paths.get("data\\" + this.databaseName + ".json"));
+        path = "data\\" + this.databaseName + ".json";
         reader = new Reader(path);
         writer = new Writer(path, cipher);
     }
@@ -74,7 +69,7 @@ public class Database {
 
     //EFFECTS: Checks if given entry name is already in use.
     public boolean isUnique(String name) {
-        for (Entry entry: entries) {
+        for (Entry entry : entries) {
             if (entry.entryName.equals(name)) {
                 return false;
             }
@@ -84,7 +79,7 @@ public class Database {
 
     //EFFECTS: Returns the username of the entry with the given entry name.
     public String getEntryUserName(String name) {
-        for (Entry entry: entries) {
+        for (Entry entry : entries) {
             if (entry.entryName.equals(name)) {
                 return entry.userName;
             }
@@ -94,7 +89,7 @@ public class Database {
 
     //EFFECTS: Decrypts and returns the password of the entry with the given entry name.
     public String getEntryPassword(String name) {
-        for (Entry entry: entries) {
+        for (Entry entry : entries) {
             if (entry.entryName.equals(name)) {
                 return entry.getPassword();
             }
