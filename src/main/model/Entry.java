@@ -19,4 +19,19 @@ public class Entry {
     public String getPassword() {
         return cipher.decryptTextOrPassword(this.password);
     }
+
+    //EFFECTS: Sets entryName to given newName
+    public void setEntryName(String newName) {
+        this.entryName = newName;
+    }
+
+    //EFFECTS: Sets entry username to given newUserName
+    public void setUserName(String newUserName) {
+        this.userName = newUserName;
+    }
+
+    //EFFECTS: Sets entry password to given newPassword
+    public void setPassword(String newPassword) {
+        this.password = this.cipher.encryptTextOrPassword(newPassword);
+    }
 }

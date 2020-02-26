@@ -60,6 +60,26 @@ public class DatabaseTest {
     }
 
     @Test
+    public void testGetEntry() {
+        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+        Entry getEntry = databaseNewTest.getEntry("test");
+        assertEquals("testusername", getEntry.userName);
+        assertEquals("testpassword", getEntry.getPassword());
+        assertEquals("test", getEntry.entryName);
+    }
+
+    @Test
+    public void testEditEntry() {
+        databaseNewTest.addNewEntry("test", "testusername", "testpassword");
+        Entry getEntry = databaseNewTest.getEntry("test");
+        databaseNewTest.editEntryName(getEntry, "notTest");
+        databaseNewTest.editEntryUserName(getEntry, "notTestUsername");
+        databaseNewTest.editEntryPassword(getEntry, "notTestPassword");
+        assertEquals("notTestUsername", databaseNewTest.getEntryUserName("notTest"));
+        assertEquals("notTestPassword", databaseNewTest.getEntryPassword("notTest"));
+    }
+
+    @Test
     public void testRemoveEntry() {
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         assertEquals(1, databaseNewTest.entries.size());

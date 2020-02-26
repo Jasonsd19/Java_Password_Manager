@@ -1,6 +1,7 @@
 package ui;
 
 import model.Database;
+import model.Entry;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 import java.io.Console;
@@ -117,7 +118,8 @@ public class PassManagerApp {
 
     //EFFECTS: Displays main menu containing possible functions of the Database file.
     public void loadMainScreen() {
-        System.out.println("Type e - to add an entry to the database");
+        System.out.println("Type a - to add an entry to the database");
+        System.out.println("Type e - to edit an existing entry");
         System.out.println("Type r - to remove an entry from the database");
         System.out.println("Type g - to get an entry from the database");
         System.out.println("Type s - to save and exit");
@@ -126,8 +128,11 @@ public class PassManagerApp {
     //EFFECTS: Initiates correct method depending on user input.
     public void processMainInput(String input) {
         switch (input) {
-            case "e":
+            case "a":
                 newEntry();
+                break;
+            case "e":
+                editEntry();
                 break;
             case "g":
                 getEntry();
@@ -141,7 +146,71 @@ public class PassManagerApp {
         }
     }
 
-    //MODIFIES: this
+    //MODIFIES: database
+    //EFFECTS: Allows user to edit an existing entry's name, username, or password
+    public void editEntry() {
+        System.out.println("Please enter the name of the entry.");
+        String entryName = scanner.nextLine();
+        if (!database.isUnique(entryName)) {
+            Entry entryToEdit = database.getEntry(entryName);
+            loadEditScreen();
+            String option = scanner.nextLine();
+            processEditInput(entryToEdit, option.toLowerCase());
+        } else {
+            System.out.println("Entry not in database.");
+        }
+    }
+
+    //EFFECTS: Displays options for editing and existing entry
+    public void loadEditScreen() {
+        System.out.println("Type n - to edit the name of the entry");
+        System.out.println("Type u - to edit the username associated with the entry");
+        System.out.println("Type p - to edit the password associated with the entry");
+    }
+
+    //EFFECTS: Calls correct method depending on user input
+    public void processEditInput(Entry entry, String entryName) {
+        switch (entryName) {
+            case "n":
+                editEntryName(entry);
+                break;
+            case "u":
+                editEntryUserName(entry);
+                break;
+            case "p":
+                editEntryPassword(entry);
+                break;
+            default:
+                System.out.println("Invalid Input!");
+        }
+
+    }
+
+    //EFFECTS: Changes the name of the entry to the name specified by the user
+    public void editEntryName(Entry entry) {
+        System.out.println("Please enter the new name of the entry.");
+        String entryName = scanner.nextLine();
+        database.editEntryName(entry, entryName);
+        System.out.println("Entry name successfully changed!");
+    }
+
+    //EFFECTS: Changes the username of the entry to the username specified by the user
+    public void editEntryUserName(Entry entry) {
+        System.out.println("Please enter the new username of the entry.");
+        String entryName = scanner.nextLine();
+        database.editEntryUserName(entry, entryName);
+        System.out.println("Entry username successfully changed!");
+    }
+
+    //EFFECTS: Changes the password of the entry to the password specified by the user
+    public void editEntryPassword(Entry entry) {
+        System.out.println("Please enter the new password of the entry.");
+        String entryName = scanner.nextLine();
+        database.editEntryPassword(entry, entryName);
+        System.out.println("Entry password successfully changed!");
+    }
+
+    //MODIFIES: database
     //EFFECTS: Takes information from user and uses it to create a new entry
     //         for the user's Database file
     //IOException an exception raised if file is not found or error in reading/writing file
@@ -159,7 +228,8 @@ public class PassManagerApp {
         }
     }
 
-    //MODIFIES: this
+
+    //MODIFIES: database
     //EFFECTS: Prints the username and password of an entry given by the user,
     //         if entry doesn't exist prints a message.
     public void getEntry() {
@@ -173,7 +243,7 @@ public class PassManagerApp {
         }
     }
 
-    //MODIFIES: this
+    //MODIFIES: database
     //EFFECTS: Removes the entry specified by the user from the Database file.
     //IOException an exception raised if file is not found or error in reading/writing file
     public void removeEntry() {
@@ -186,7 +256,7 @@ public class PassManagerApp {
         }
     }
 
-    //MODIFIES: this
+    //MODIFIES: database
     //EFFECTS: Saves and encrypts all the data in the Database and entries to a text file.
     //IOException an exception raised if file is not found or error in reading/writing file
     public void saveDatabase() {

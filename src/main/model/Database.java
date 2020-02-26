@@ -77,6 +77,36 @@ public class Database {
         return true;
     }
 
+    //REQUIRES: Entry with entryName actually exists (can check with isUnique method)
+    //EFFECTS: Returns entry with given entryName
+    public Entry getEntry(String entryName) {
+        Entry result = null;
+        for (Entry entry: entries) {
+            if (entry.entryName.equals(entryName)) {
+                result = entry;
+            }
+        }
+        return result;
+    }
+
+    //MODIFIES: Entry
+    //EFFECTS: Changes the name of given entry to specified newEntryName
+    public void editEntryName(Entry entry, String newEntryName) {
+        entry.setEntryName(newEntryName);
+    }
+
+    //MODIFIES: Entry
+    //EFFECTS: Changes the username of given entry to specified newUserName
+    public void editEntryUserName(Entry entry, String newUserName) {
+        entry.setUserName(newUserName);
+    }
+
+    //MODIFIES: Entry
+    //EFFECTS: Changes the password of given entry to specified newPassword
+    public void editEntryPassword(Entry entry, String newPassword) {
+        entry.setPassword(newPassword);
+    }
+
     //EFFECTS: Returns the username of the entry with the given entry name.
     public String getEntryUserName(String name) {
         for (Entry entry : entries) {

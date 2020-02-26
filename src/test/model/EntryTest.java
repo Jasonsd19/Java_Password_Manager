@@ -31,4 +31,14 @@ public class EntryTest {
         assertEquals("testpassword", testEntry.getPassword());
         assertEquals("testpassword2", testEntryTwo.getPassword());
     }
+
+    @Test
+    public void testSetters() {
+        testEntry.setEntryName("newEntryName");
+        testEntry.setUserName("newEntryUserName");
+        testEntry.setPassword("newEntryPassword");
+        assertEquals("newEntryName", testEntry.entryName);
+        assertEquals("newEntryUserName", testEntry.userName);
+        assertEquals("newEntryPassword", testEntry.getPassword());
+    }
 }
