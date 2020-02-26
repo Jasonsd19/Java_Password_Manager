@@ -25,9 +25,12 @@ public class Database {
         cipher = new Cipher(password);
         entries = new ArrayList<>();
         this.databaseName = name;
-        if (Files.exists(Paths.get("data\\" + this.databaseName + ".json"))) {
-            throw new FileAlreadyExistsException("data\\" + this.databaseName + ".json");
-        }
+//        if (Files.exists(Paths.get("data\\" + this.databaseName + ".json"))) {
+//            throw new FileAlreadyExistsException("data\\" + this.databaseName + ".json");
+//        }
+//        File file = new File("data\\" + this.databaseName + ".json");
+//        file.createNewFile();
+        Files.deleteIfExists(Paths.get("data\\" + this.databaseName + ".json"));
         File file = new File("data\\" + this.databaseName + ".json");
         file.createNewFile();
         path = file.getPath();

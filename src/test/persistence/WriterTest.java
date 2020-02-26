@@ -20,10 +20,10 @@ public class WriterTest {
     @BeforeEach
     public void setup(){
         try {
-            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
-            databaseTest.entries = new ArrayList<>();
-            databaseTest.save();
-            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
+            databaseTest = new Database("testWriter", "password");
+//            databaseTest.entries = new ArrayList<>();
+//            databaseTest.save();
+//            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
@@ -38,10 +38,10 @@ public class WriterTest {
         }
     }
 
-    @Test
-    public void testConstructor() {
-        assertEquals("data\\testWriter.json", databaseTest.writer.path);
-    }
+//    @Test
+//    public void testConstructor() {
+//        assertEquals("data\\testWriter.json", databaseTest.writer.path);
+//    }
 
     @Test
     public void testWriteEntriesToFile() {
@@ -54,7 +54,7 @@ public class WriterTest {
             databaseTest.entries = new ArrayList<>();
             assertEquals(0, databaseTest.entries.size());
             // load() method adds previous two entries to newly instantiated entries ArrayList from json file
-            databaseTest = new Database("data\\testWriter.json", "testWriter", "password");
+            databaseTest.load();
             assertEquals(2, databaseTest.entries.size());
         } catch (IOException e) {
             fail();

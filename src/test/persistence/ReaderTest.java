@@ -1,7 +1,6 @@
 package persistence;
 
 import model.Database;
-import model.Entry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,10 +20,10 @@ public class ReaderTest {
     @BeforeEach
     public void setup(){
         try {
-            databaseTest = new Database("data\\testReader.json", "testReader", "password");
-            databaseTest.entries = new ArrayList<>();
-            databaseTest.save();
-            databaseTest = new Database("data\\testReader.json", "testReader", "password");
+            databaseTest = new Database("testReader", "password");
+//            databaseTest.entries = new ArrayList<>();
+//            databaseTest.save();
+//            databaseTest = new Database("data\\testReader.json", "testReader", "password");
         } catch (IOException e) {
             System.out.println("This shouldn't print out.");
         }
@@ -39,10 +38,10 @@ public class ReaderTest {
         }
     }
 
-    @Test
-    public void testConstructor() {
-        assertEquals("data\\testReader.json", databaseTest.reader.path);
-    }
+//    @Test
+//    public void testConstructor() {
+//        assertEquals("data\\testReader.json", databaseTest.reader.path);
+//    }
 
     @Test
     public void testReadEntries() {
@@ -54,7 +53,7 @@ public class ReaderTest {
             databaseTest.entries = new ArrayList<>();
             assertEquals(0, databaseTest.entries.size());
             // load() method calls readEntries()
-            databaseTest = new Database("data\\testReader.json", "testReader", "password");
+            databaseTest.load();
             assertEquals(2, databaseTest.entries.size());
         } catch (IOException e) {
             fail();
