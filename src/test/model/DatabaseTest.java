@@ -61,6 +61,7 @@ public class DatabaseTest {
 
     @Test
     public void testGetEntry() {
+        databaseNewTest.addNewEntry("test2", "testusername2", "testpassword2");
         databaseNewTest.addNewEntry("test", "testusername", "testpassword");
         Entry getEntry = databaseNewTest.getEntry("test");
         assertEquals("testusername", getEntry.userName);
