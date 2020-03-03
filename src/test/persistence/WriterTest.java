@@ -15,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WriterTest {
     Database databaseTest;
 
-    // Both writeEntriesToFile() and writeDecryptedTextToFile() are tested indirectly in DatabaseTest class.
-    // Additionally writeDecryptedTextToFile() is tested whenever the database.load() method is called in the
-    //              setup() and testWriteEntriesToFile() methods.
+    // The writeEntriesToFile() and is tested indirectly in DatabaseTest class.
 
     @BeforeEach
     public void setup() {

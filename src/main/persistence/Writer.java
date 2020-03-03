@@ -30,12 +30,4 @@ public class Writer {
         writer.print(encryptedText);
         writer.close();
     }
-
-    //MODIFIES: json file
-    //EFFECTS: Writes decrypted text to database file.
-    public void writeDecryptedTextToFile(String decryptedText) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(path));
-        writer.print(decryptedText);
-        writer.close();
-    }
 }

@@ -20,9 +20,9 @@ public class Reader {
     }
 
     //EFFECTS: Reads a decrypted Database text file and returns a list of all entries found within the file.
-    public ArrayList<Entry> readEntries() throws IOException {
-        JsonReader reader = new JsonReader(new FileReader(path));
-        return new Gson().fromJson(reader, new TypeToken<ArrayList<Entry>>() {
+    public ArrayList<Entry> readEntries(String jsonString) throws IOException {
+//        JsonReader reader = new JsonReader(new FileReader(path));
+        return new Gson().fromJson(jsonString, new TypeToken<ArrayList<Entry>>() {
         }.getType());
     }
 

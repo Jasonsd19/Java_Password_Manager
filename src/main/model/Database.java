@@ -136,13 +136,12 @@ public class Database {
     //MODIFIES: json file
     //EFFECTS: Decrypts all text in Database file using master password as key.
     public void load() throws EncryptionOperationNotPossibleException, IOException {
-        writer.writeDecryptedTextToFile(cipher.decryptTextOrPassword(reader.readEncryptedFile()));
-        loadEntries();
+        loadEntries(cipher.decryptTextOrPassword(reader.readEncryptedFile()));
     }
 
     //MODIFIES: this
     //EFFECTS: Loads all entries from an existing Database file and adds them to the entries list.
-    public void loadEntries() throws IOException {
-        entries.addAll(reader.readEntries());
+    public void loadEntries(String jsonString) throws IOException {
+        entries.addAll(reader.readEntries(jsonString));
     }
 }
