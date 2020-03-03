@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+//Represents a JPanel that incorporates file finder functionality
 public class FileFinder extends JPanel implements ActionListener {
 
     public JLabel filePathLabel;
@@ -14,6 +15,7 @@ public class FileFinder extends JPanel implements ActionListener {
     public JButton findFileButton;
     private JFileChooser fileChooser;
 
+    //EFFECTS: Sets up layout for FileFinder JPanel
     public FileFinder() {
         BorderLayout layout = new BorderLayout();
         layout.setHgap(5);
@@ -39,6 +41,8 @@ public class FileFinder extends JPanel implements ActionListener {
     }
 
     @Override
+    //MODIFIES: this
+    //EFFECTS: If user clicks find file button then displays path of user selected file in filePath JTextField.
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(findFileButton)) {
             int returnVal = fileChooser.showOpenDialog(null);

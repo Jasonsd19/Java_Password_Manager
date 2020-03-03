@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//Represents the dialog window encountered by the user when creating a new database
 public class CreationDialog extends JDialog implements ActionListener {
 
     private JFrame parentFrame;
@@ -13,11 +14,14 @@ public class CreationDialog extends JDialog implements ActionListener {
     private JButton createButton;
     private CreationListener creationListener;
 
+    //EFFECTS: Sets up parent frame and modal of JDialog
     public CreationDialog(JFrame frame, Boolean modal) {
         parentFrame = frame;
         setModal(modal);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets up layout of dialog
     public void setup() {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -39,6 +43,8 @@ public class CreationDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places the name label on the dialog
     public void setupNameLabel(GridBagConstraints constraints, Insets standardInset) {
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -51,6 +57,8 @@ public class CreationDialog extends JDialog implements ActionListener {
         add(nameLabel, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places the name text field on the dialog
     public void setupNameField(GridBagConstraints constraints, Insets standardInset) {
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -62,6 +70,8 @@ public class CreationDialog extends JDialog implements ActionListener {
         add(nameField, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places the password label on the dialog
     public void setupPasswordLabel(GridBagConstraints constraints, Insets standardInset) {
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -73,6 +83,8 @@ public class CreationDialog extends JDialog implements ActionListener {
         add(passwordLabel, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places the password text field on the dialog
     public void setupPasswordField(GridBagConstraints constraints, Insets standardInset) {
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -84,6 +96,8 @@ public class CreationDialog extends JDialog implements ActionListener {
         add(passwordField, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places the create button on the dialog
     public void setupCreateButton(GridBagConstraints constraints, Insets standardInset) {
         constraints.gridx = 0;
         constraints.gridy = 2;
@@ -97,11 +111,17 @@ public class CreationDialog extends JDialog implements ActionListener {
         add(createButton, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets creationListener that communicates with the MainFrame
     public void setCreationListener(CreationListener creationListener) {
         this.creationListener = creationListener;
     }
 
     @Override
+    //MODIFIES: this
+    //EFFECTS: Handles user click events for the create button
+    //         Create button verifies user entered information is valid then creates database and switches to main frame
+    //         Otherwise provides JOption error windows specifying mistake made by user.
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(createButton)) {
             if (creationListener != null && passwordField.getPassword().length >= 8) {

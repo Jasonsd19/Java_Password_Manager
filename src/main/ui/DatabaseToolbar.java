@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//Represents the tool bar with buttons that modify entries on the top of the MainFrame
 public class DatabaseToolbar extends JPanel implements ActionListener {
 
     private JButton getPasswordButton;
@@ -13,6 +14,7 @@ public class DatabaseToolbar extends JPanel implements ActionListener {
     private JButton removeEntryButton;
     private ToolBarListener toolBarListener;
 
+    //EFFECTS: Sets up the layout of the toolbar JPanel and adds buttons
     public DatabaseToolbar() {
         setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
 
@@ -37,6 +39,8 @@ public class DatabaseToolbar extends JPanel implements ActionListener {
     }
 
     @Override
+    //EFFECTS: Communicates the pressing of any of the specified buttons or selecting of a specific row in the table
+    //         with the MainFrame, which carries out the correct response.
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(addEntryButton)) {
             toolBarListener.buttonListener("a");
@@ -53,16 +57,22 @@ public class DatabaseToolbar extends JPanel implements ActionListener {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the listener that communicates between the DatabaseToolbar and MainFrame classes
     public void setToolBarListener(ToolBarListener toolBarListener) {
         this.toolBarListener = toolBarListener;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Enables all buttons except for the addEntryButton
     public void enableButtons() {
         getPasswordButton.setEnabled(true);
         editEntryButton.setEnabled(true);
         removeEntryButton.setEnabled(true);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Disables all buttons except for the addEntryButton
     public void disableButtons() {
         getPasswordButton.setEnabled(false);
         editEntryButton.setEnabled(false);

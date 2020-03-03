@@ -127,6 +127,7 @@ public class LoginDialog extends JDialog implements ActionListener {
     //EFFECTS: Handles user click events for each of the buttons
     //         For the submit button, verifies user file and password and switches frames if user input valid
     //         For create new Button communicates event with MainFrame which routes to CreationDialog class.
+    //         Otherwise creates JOption error window specifying user mistake
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(submitButton)) {
             if (loginListener != null) {
