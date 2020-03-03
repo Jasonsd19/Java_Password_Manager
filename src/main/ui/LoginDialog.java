@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//Represents the dialog window encountered by the user when starting the application
+//Allows the user to either login with an existing database or create a new database
 public class LoginDialog extends JDialog implements ActionListener {
 
     private JFrame parentFrame;
@@ -14,11 +16,14 @@ public class LoginDialog extends JDialog implements ActionListener {
     private JButton createNewButton;
     private LoginListener loginListener;
 
+    //EFFECTS: Sets up parent frame and modal of JDialog
     public LoginDialog(JFrame frame, Boolean modal) {
         parentFrame = frame;
         setModal(modal);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets up layout of dialog
     public void setup() {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -45,6 +50,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places create new database button on dialog
     public void setupCreateButton(GridBagConstraints constraints) {
         constraints.gridx = 1;
         constraints.gridy = 2;
@@ -54,6 +61,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(createNewButton, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places submit button on dialog
     public void setupSubmitButton(GridBagConstraints constraints) {
         constraints.gridx = 2;
         constraints.gridy = 1;
@@ -63,6 +72,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(submitButton, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places password field on dialog
     public void setupPasswordField(GridBagConstraints constraints) {
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -71,6 +82,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(passwordField, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places password label on dialog
     public void setupPasswordLabel(GridBagConstraints constraints) {
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -79,6 +92,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(passwordLabel, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places find file button on dialog
     public void setupFileFinderButton(GridBagConstraints constraints) {
         constraints.gridx = 2;
         constraints.gridy = 0;
@@ -86,6 +101,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(fileFinder.findFileButton, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places find file text field on dialog
     public void setupFileFinderPath(GridBagConstraints constraints) {
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -93,6 +110,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         add(fileFinder.filePath, constraints);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Creates and places find file label on dialog
     public void setupFileFinderLabel(GridBagConstraints constraints) {
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -104,6 +123,10 @@ public class LoginDialog extends JDialog implements ActionListener {
     }
 
     @Override
+    //MODIFIES: this
+    //EFFECTS: Handles user click events for each of the buttons
+    //         For the submit button, verifies user file and password and switches frames if user input valid
+    //         For create new Button communicates event with MainFrame which routes to CreationDialog class.
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(submitButton)) {
             if (loginListener != null) {
@@ -119,6 +142,8 @@ public class LoginDialog extends JDialog implements ActionListener {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets loginListener
     public void setLoginListener(LoginListener loginListener) {
         this.loginListener = loginListener;
     }

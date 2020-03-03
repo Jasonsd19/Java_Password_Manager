@@ -8,6 +8,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
 
+//***************************** REPLACED BY MAINFRAME AND RESPECTIVE GUI ********************************
 //NOTE: Cannot mask password fields because Console.readPassword() does not function properly in IDEs and
 //      always results in NullPointerExceptions.
 // Runs the Password Manager program

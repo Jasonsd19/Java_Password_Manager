@@ -11,6 +11,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.IOException;
 
+// Represents the Main Frame of the application that displays and manipulates entries
+// Also integrates various dialogs and acts as the center of communication between
+// All other dialogs, frames and instances.
 public class MainFrame extends JFrame {
 
     private Database database;
@@ -18,6 +21,7 @@ public class MainFrame extends JFrame {
     private CreationDialog creationDialog;
     private EntryTable entryTable;
 
+    // EFFECTS: Sets up various JDialogs and displays database entries if login is successful
     public MainFrame() {
         this.setVisible(false);
 
@@ -43,18 +47,21 @@ public class MainFrame extends JFrame {
         setupEntryTable(databaseToolbar);
 
         if (isVisible()) {
-            setupIfValidLogin(databaseToolbar);
+            setupMainFrame(databaseToolbar);
         } else {
             this.dispose();
             System.exit(0);
         }
     }
 
+    // MODIFIES: this
+    //EFFECTS: Sets up entryTable frame that displays entries
     public void setupEntryTable(DatabaseToolbar databaseToolbar) {
         entryTable = new EntryTable();
         entryTable.setEntryTableListener(databaseToolbar::enableButtons);
     }
 
+    //EFFECTS: Sets up database Toolbar with buttons to manipulate entries
     public DatabaseToolbar getDatabaseToolbar() {
         DatabaseToolbar databaseToolbar = new DatabaseToolbar();
         databaseToolbar.setToolBarListener(new ToolBarListener() {
@@ -82,7 +89,8 @@ public class MainFrame extends JFrame {
         return databaseToolbar;
     }
 
-    public void setupIfValidLogin(DatabaseToolbar databaseToolbar) {
+    // EFFECTS: Sets up border layout, menu, toolbar and table
+    public void setupMainFrame(DatabaseToolbar databaseToolbar) {
         setLayout(new BorderLayout());
 
         setJMenuBar(makeMenuBar());
@@ -99,6 +107,7 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    // EFFECTS: Brings up save dialog when user attempts to exit application
     public void setupWindowListener() {
         addWindowListener(new WindowAdapter() {
             @Override
@@ -122,6 +131,8 @@ public class MainFrame extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: Takes user input from LoginDialog, verifies if it's correct and loads relevant database if correct
     public Boolean loadDatabase(String path, String name, char[] password) {
         try {
             database = new Database(path, name, String.valueOf(password));
@@ -134,6 +145,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Takes user input from CreationDialog, verifies if it's valid and creates database if valid
     public Boolean createDatabase(String name, char[] password) {
         try {
             database = new Database(name, String.valueOf(password));
@@ -144,11 +157,14 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: loginDialog
+    // EFFECTS: Closes loginDialog and brings up creationDialog
     public void changeDialog() {
         loginDialog.setVisible(false);
         creationDialog.setup();
     }
 
+    // EFFECTS: Creates menu bar for main frame
     private JMenuBar makeMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -177,6 +193,8 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
+    // MODIFIES: database, entryTable
+    // EFFECTS: Adds entry to entryTable and database
     public void addEntry() {
         JTextField entryNameField = new JTextField();
         JTextField usernameField = new JTextField();
@@ -197,6 +215,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: database, entryTable
+    // EFFECTS: Edits entry in Database and displays edited entry in JTable
     public void editEntry() {
         Entry entryToEdit = null;
         String[] options = {
@@ -220,6 +240,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: database, entryTable
+    // EFFECTS: Changes current username to specified username
     public void changeUsername(Entry entry) {
         JTextField usernameField = new JTextField();
         Object[] message = {
@@ -233,6 +255,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: database, entryTable
+    // EFFECTS: Changes current password to specified password
     public void changePassword(Entry entry) {
         JPasswordField passwordField = new JPasswordField();
         Object[] message = {
@@ -246,6 +270,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // MODIFIES: database, entryTable
+    // EFFECTS: Removes specified entry from database and entryTable
     public void removeEntry() {
         String entryName = entryTable.getSelectedRowEntryName();
         if (!database.isUnique(entryName)) {
@@ -256,6 +282,7 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // EFFECTS: Retrieves password of specified entry and copies it to clipboard.
     public void getEntryPassword() {
         String entryName = entryTable.getSelectedRowEntryName();
         if (!database.isUnique(entryName)) {
