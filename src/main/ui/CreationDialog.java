@@ -11,6 +11,7 @@ public class CreationDialog extends JDialog implements ActionListener {
     private JFrame parentFrame;
     private JTextField nameField;
     private JPasswordField passwordField;
+    private JButton backButton;
     private JButton createButton;
     private CreationListener creationListener;
 
@@ -23,6 +24,7 @@ public class CreationDialog extends JDialog implements ActionListener {
     //MODIFIES: this
     //EFFECTS: Sets up layout of dialog
     public void setup() {
+        setVisible(false);
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         Insets standardInset = new Insets(5, 5, 5, 5);
@@ -35,12 +37,13 @@ public class CreationDialog extends JDialog implements ActionListener {
 
         setupPasswordField(constraints, standardInset);
 
+        setupBackButton(constraints, standardInset);
+
         setupCreateButton(constraints, standardInset);
 
         setSize(325, 150);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     //MODIFIES: this
@@ -99,9 +102,9 @@ public class CreationDialog extends JDialog implements ActionListener {
     //MODIFIES: this
     //EFFECTS: Creates and places the create button on the dialog
     public void setupCreateButton(GridBagConstraints constraints, Insets standardInset) {
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 2;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
         constraints.gridheight = 1;
         constraints.insets = standardInset;
         constraints.fill = GridBagConstraints.NONE;
@@ -109,6 +112,21 @@ public class CreationDialog extends JDialog implements ActionListener {
         createButton = new JButton("Create");
         createButton.addActionListener(this);
         add(createButton, constraints);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Creates and places the back button on the dialog
+    public void setupBackButton(GridBagConstraints constraints, Insets standardInset) {
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.insets = standardInset;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_END;
+        backButton = new JButton("Back");
+        backButton.addActionListener(this);
+        add(backButton, constraints);
     }
 
     //MODIFIES: this
@@ -136,6 +154,8 @@ public class CreationDialog extends JDialog implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Password needs to be at least 8"
                         + " characters long!");
             }
+        } else if (actionEvent.getSource().equals(backButton)) {
+            creationListener.changeDialog();
         }
     }
 }

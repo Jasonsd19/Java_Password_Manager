@@ -25,21 +25,11 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         this.setVisible(false);
 
-        creationDialog = new CreationDialog(this, true);
-        creationDialog.setCreationListener(this::createDatabase);
+        setupCreationDialog();
 
-        loginDialog = new LoginDialog(this, true);
-        loginDialog.setLoginListener(new LoginListener() {
-            @Override
-            public Boolean loadDatabaseAndVerify(String path, char[] password) {
-                return loadDatabase(path, "temp", password);
-            }
+        setupLoginDialog();
 
-            @Override
-            public void dialogSwitcher() {
-                changeDialog();
-            }
-        });
+        creationDialog.setup();
 
         loginDialog.setup();
 
@@ -52,6 +42,36 @@ public class MainFrame extends JFrame {
             this.dispose();
             System.exit(0);
         }
+    }
+
+    public void setupLoginDialog() {
+        loginDialog = new LoginDialog(this, true);
+        loginDialog.setLoginListener(new LoginListener() {
+            @Override
+            public Boolean loadDatabaseAndVerify(String path, char[] password) {
+                return loadDatabase(path, "temp", password);
+            }
+
+            @Override
+            public void dialogSwitcher() {
+                changeLoginToCreation();
+            }
+        });
+    }
+
+    public void setupCreationDialog() {
+        creationDialog = new CreationDialog(this, true);
+        creationDialog.setCreationListener(new CreationListener() {
+            @Override
+            public Boolean createNewAndVerify(String name, char[] password) {
+                return createDatabase(name, password);
+            }
+
+            @Override
+            public void changeDialog() {
+                changeCreationToLogin();
+            }
+        });
     }
 
     // MODIFIES: this
@@ -157,11 +177,18 @@ public class MainFrame extends JFrame {
         }
     }
 
-    // MODIFIES: loginDialog
+    // MODIFIES: loginDialog, creationDialog
     // EFFECTS: Closes loginDialog and brings up creationDialog
-    public void changeDialog() {
+    public void changeLoginToCreation() {
         loginDialog.setVisible(false);
-        creationDialog.setup();
+        creationDialog.setVisible(true);
+    }
+
+    //MODIFIES: loginDialog, creationDialog
+    //EFFECTS: Closes creationDialog and brings up loginDialog
+    public void changeCreationToLogin() {
+        creationDialog.setVisible(false);
+        loginDialog.setVisible(true);
     }
 
     // EFFECTS: Creates menu bar for main frame
