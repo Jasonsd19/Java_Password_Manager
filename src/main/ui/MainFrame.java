@@ -4,11 +4,13 @@ import model.Database;
 import model.Entry;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 
 // Represents the Main Frame of the application that displays and manipulates entries
@@ -239,6 +241,7 @@ public class MainFrame extends JFrame {
             String password = String.valueOf(passwordField.getPassword());
             database.addNewEntry(entryName, username, password);
             entryTable.refresh();
+            playSound();
         }
     }
 
@@ -304,6 +307,7 @@ public class MainFrame extends JFrame {
         if (!database.isUnique(entryName)) {
             database.removeEntry(entryName);
             entryTable.refresh();
+            playSound();
         } else {
             JOptionPane.showMessageDialog(null, "Entry doesn't exist!");
         }
@@ -319,6 +323,18 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(null, "Password copied to clipboard!");
         } else {
             JOptionPane.showMessageDialog(null, "Entry doesn't exist!");
+        }
+    }
+
+    public void playSound() {
+        try {
+            Clip clip = AudioSystem.getClip();
+            File file = new File("data\\Click2-Sebastian-759472264.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
         }
     }
 }
