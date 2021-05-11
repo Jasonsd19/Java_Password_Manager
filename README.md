@@ -1,4 +1,5 @@
 # Client Side Password Manager
+* Note this is an individual project intended for learning, this program is not intended for commercial use. I highly recommend you do not actually use this as a password manager.
 
 ## What will the application do?
 
